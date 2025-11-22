@@ -1,0 +1,13 @@
+{
+  "name": "bot-delle-confessioni",
+  "version": "1.0.0",
+  "description": "Bot Discord per la gestione di confessioni anonime con moderazione.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "discord.js": "^14.17.1",
+    "dotenv": "^16.4.5"
+  }
+}
