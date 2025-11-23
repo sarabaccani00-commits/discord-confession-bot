@@ -1,0 +1,43 @@
+name: Bot Runner
+
+# Questo workflow si attiva in due modi:
+# 1. Ogni volta che fai push su 'main'
+# 2. Manualmente, per farlo partire quando vuoi
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  run-bot:
+    runs-on: ubuntu-latest
+    
+    # Timeout di 6 ore per evitare l'utilizzo eccessivo,
+    # poi il job viene rilanciato per un ciclo infinito
+    timeout-minutes: 360
+    
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      # Installare le dipendenze
+      - name: Install dependencies
+        run: npm install
+
+      # Avviare il bot. Usa il token segreto (Secret) dal tuo repository.
+      - name: Start Bot
+        run: node index.js
+        env:
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+          CHANNEL_SETUP_ID: ${{ secrets.CHANNEL_SETUP_ID }}
+          CHANNEL_MOD_REVIEW_ID: ${{ secrets.CHANNEL_MOD_REVIEW_ID }}
+          CHANNEL_PUBLIC_CONFESSION_ID: ${{ secrets.CHANNEL_PUBLIC_CONFESSION_ID }}
+          CHANNEL_MOD_LOG_ID: ${{ secrets.CHANNEL_MOD_LOG_ID }}
+          ROLE_MOD_ID: ${{ secrets.ROLE_MOD_ID }}
+          ANON_AVATAR_URL: ${{ secrets.ANON_AVATAR_URL }}
