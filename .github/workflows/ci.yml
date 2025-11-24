@@ -34,12 +34,6 @@ jobs:
       - name: Start Bot
         run: node index.js
         env:
-        # Aggiungi questo blocco alla fine, per riavviare automaticamente
-      - name: Riavvia Workflow
-        uses: benc-uk/workflow-dispatch@v1
-        with:
-          workflow: Bot Runner
-          token: ${{ secrets.GITHUB_TOKEN }}
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
           CHANNEL_SETUP_ID: ${{ secrets.CHANNEL_SETUP_ID }}
           CHANNEL_MOD_REVIEW_ID: ${{ secrets.CHANNEL_MOD_REVIEW_ID }}
@@ -47,3 +41,13 @@ jobs:
           CHANNEL_MOD_LOG_ID: ${{ secrets.CHANNEL_MOD_LOG_ID }}
           ROLE_MOD_ID: ${{ secrets.ROLE_MOD_ID }}
           ANON_AVATAR_URL: ${{ secrets.ANON_AVATAR_URL }}
+
+      # PARTE PER L'AUTORIAVVIO H24:
+      # L'istruzione "if: always()" garantisce che questo passaggio venga eseguito
+      # anche se il bot va in timeout o viene annullato.
+      - name: Riavvia Workflow
+        if: always()
+        uses: benc-uk/workflow-dispatch@v1
+        with:
+          workflow: Bot Runner
+          token: ${{ secrets.GITHUB_TOKEN }}
