@@ -9,12 +9,18 @@ on:
       - main
   workflow_dispatch:
 
+# **BLOCCO AGGIUNTO: DA' IL PERMESSO DI RIAVVIARE SE STESSO**
+# Questo risolve l'errore "Resource not accessible by integration"
+permissions:
+  contents: read
+  actions: write
+  
 jobs:
   run-bot:
     runs-on: ubuntu-latest
     
     # Timeout di 6 ore per evitare l'utilizzo eccessivo,
-    # poi il job viene rilanciato per un ciclo infinito
+    # poi il job viene rilanciato per un ciclo infinito (24/7)
     timeout-minutes: 360
     
     steps:
@@ -51,3 +57,4 @@ jobs:
         with:
           workflow: Bot Runner
           token: ${{ secrets.GITHUB_TOKEN }}
+   
